@@ -1,0 +1,101 @@
+<div class="container">
+
+  <div class="page-header">
+    <h1>Rails Memcache管理ツール</h1>
+  </div>
+
+  <div class="row">
+    <div class="bs-example">
+    <%= form_tag('/', role: 'form', id: 'mem_form', method: 'post') do %>
+
+      <div class="form-group">
+        <p>
+          <% if params[:mode].blank? %><b>通常</b>
+          <% else %><%= link_to "通常", :controller => "top", :action => "index", :env => params[:env], :ns => params[:ns] %>
+          <% end %>
+          |
+          <% if params[:mode] == 'prural' %><b>一括削除</b>
+          <% else %><%= link_to "一括削除", :controller => "top", :action => "index", :env => params[:env], :ns => params[:ns], :mode => 'prural' %>
+          <% end %>
+        </p>
+        <input type="hidden" name="mode" value="<%= params[:mode] %>">
+      </div>
+
+      <div class="form-group">
+        <label for="env">環境</label>
+        <%
+          default_env = params[:env].present? ? params[:env] : 'production'
+        %>
+        <% @environment_list.each do |env, servers| %>
+        <div class="radio">
+          <label>
+            <input type="radio" name="env" id="env_<%= env %>" value="<%= env %>"<% if env == default_env %> checked<% end %>>
+            <%= "#{env} #{servers}" %>
+          </label>
+        </div>
+        <% end %>
+      </div>
+
+      <div class="form-group">
+        <label for="ns">NAMESPACE</label>
+        <%
+          default_ns = params[:ns].present? ? params[:ns] : 'sp'
+        %>
+        <% @namespace_list.each do |ns| %>
+        <div class="radio">
+          <label>
+            <input type="radio" name="ns" id="ns_<%= ns %>" value="<%= ns %>"<% if ns == default_ns %> checked<% end %>>
+            <%= ns %>
+          </label>
+        </div>
+        <% end %>
+      </div>
+
+      <% if params[:mode] == 'prural' %>
+        <div class="form-group">
+          <label for="cacheKey">キャッシュキー</label>
+          <textarea class="form-control" rows="5" name="key" value="<%= params[:key] %>" class="form-control" id="cacheKey" placeholder="改行区切りでkeyを入力"><%= params[:key] %></textarea>
+        </div>
+
+        <input type="button" class="btn btn-danger btn-mem-action" value="一括削除" data-type="delete_prural">
+      <% else %>
+        <div class="form-group">
+          <label for="cacheKey">キャッシュキー</label>
+          <input type="text" name="key" value="<%= params[:key] %>" class="form-control" id="cacheKey" placeholder="例：views/travelogue_popular_hotel_os_197">
+        </div>
+
+        <input type="button" value="検索" class="btn btn-primary btn-mem-action" data-type="index">
+        <% if @value.present? %>
+          <input type="button" value="削除" class="btn btn-danger btn-mem-action" data-type="delete">
+        <% end %>
+      <% end %>
+    <% end %>
+    </div>
+  </div>
+
+  <% if action_name == 'index' %>
+    <% if @value.present? %>
+      <div class="row">
+        <p class="text-success">Cache Hit!!</p>
+        <div class="highlight">
+          <pre><code><%= @value %></code></pre>
+        </div>
+      </div>
+    <% elsif params[:key].present? %>
+      <div class="row">
+        <p class="text-danger">Cache Misses!!</p>
+      </div>
+    <% end %>
+  <% else %>
+      <div class="row">
+        <% if @delete_count > 0 %>
+          <p class="text-success">Cache Delete!!(delete count: <%= @delete_count %> / input key count: <%= @key_count %>)</p>
+        <% else %>
+          <p class="text-danger">Cache Misses!!</p>
+        <% end %>
+      </div>
+  <% end %>
+
+</div>
+
+ <%= javascript_include_tag 'memcached' %>
