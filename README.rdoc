@@ -1,7 +1,5 @@
-== README
-
-Put github auth file.
-
+# Put github auth file.
+  config/memserver.yml
 <pre>
 COMMON: &COMMON
   memservers:
