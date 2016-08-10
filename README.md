@@ -7,8 +7,8 @@
 COMMON: &COMMON
   memservers:
     production:
-      - "mslb05:11211"
-      - "mslb06:11211"
+      - "xxxx1:11211"
+      - "xxxx2:11211"
     development:
       - "localhost:11211"
 development:
