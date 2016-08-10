@@ -3,6 +3,7 @@
 
 # file body
 
+<pre>
 COMMON: &COMMON
   memservers:
     production:
@@ -16,3 +17,4 @@ test:
   <<: *COMMON
 production:
   <<: *COMMON
+</pre>
