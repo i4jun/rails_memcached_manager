@@ -10,12 +10,12 @@
 
       <div class="form-group">
         <p>
-          <% if params[:mode].blank? %><b>通常</b>
-          <% else %><%= link_to "通常", :controller => "top", :action => "index", :env => params[:env], :ns => params[:ns] %>
+          <% if params[:mode].blank? %><b>検索</b>
+          <% else %><%= link_to "検索", :controller => "top", :action => "index", :env => params[:env], :ns => params[:ns] %>
           <% end %>
           |
-          <% if params[:mode] == 'prural' %><b>一括削除</b>
-          <% else %><%= link_to "一括削除", :controller => "top", :action => "index", :env => params[:env], :ns => params[:ns], :mode => 'prural' %>
+          <% if params[:mode] == 'prural' %><b>削除</b>
+          <% else %><%= link_to "削除", :controller => "top", :action => "index", :env => params[:env], :ns => params[:ns], :mode => 'prural' %>
           <% end %>
         </p>
         <input type="hidden" name="mode" value="<%= params[:mode] %>">
@@ -57,7 +57,7 @@
           <textarea class="form-control" rows="5" name="key" value="<%= params[:key] %>" class="form-control" id="cacheKey" placeholder="改行区切りでkeyを入力"><%= params[:key] %></textarea>
         </div>
 
-        <input type="button" class="btn btn-danger btn-mem-action" value="一括削除" data-type="delete_prural">
+        <input type="button" class="btn btn-danger btn-mem-action" value="削除" data-type="delete_prural">
       <% else %>
         <div class="form-group">
           <label for="cacheKey">キャッシュキー</label>

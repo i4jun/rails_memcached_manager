@@ -32,6 +32,17 @@ class TopController < ApplicationController
     render action: :index
   end
 
+  def flush
+    _valid
+
+    if params[:ns].present? && params[:env].present?
+      dc = _get_dc
+      dc.flush
+    end
+
+    render action: :index
+  end
+
   private
   def _valid
     memservers = MY_APP['memservers']
